@@ -1,0 +1,340 @@
+type: collection.insomnia.rest/5.0
+name: Scratch Pad
+meta:
+  id: wrk_scratchpad
+  created: 1748649545362
+  modified: 1748649545362
+collection:
+  - name: sustentabilidade
+    meta:
+      id: fld_63d6d62187514056ae67452d29c1e168
+      created: 1779400690543
+      modified: 1779400690543
+      sortKey: -1779400690543
+    children:
+      - name: Empresa
+        meta:
+          id: fld_63b9169f688d430d81320f1f6ecf3b55
+          created: 1779400709823
+          modified: 1779400709823
+          sortKey: -1779400709823
+        children:
+          - url: http://localhost:8080/auth/register
+            name: Cadastro Empresa
+            meta:
+              id: req_1a53a7da0d194ff7a13f0a47ea8641b8
+              created: 1779489624546
+              modified: 1779662069703
+              isPrivate: false
+              sortKey: -1779489624546
+            method: POST
+            body:
+              mimeType: application/json
+              text: |-
+                {
+                  "nomeEmpresa": "Green Tech Solutions",
+                  "nomeCidade": "Curitiba",
+                  "siglaEstado": "PR",
+                  "email": "greentech@email.com",
+                  "senha": "123456"
+                }
+            headers:
+              - name: Content-Type
+                value: application/json
+              - name: User-Agent
+                value: insomnia/11.1.0
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: http://localhost:8080/empresas
+            name: Listar Empresa
+            meta:
+              id: req_3690fcc04ee24ab19c833e574ad11ae5
+              created: 1779489784451
+              modified: 1779662131220
+              isPrivate: false
+              sortKey: -1779489784451
+            method: GET
+            headers:
+              - name: User-Agent
+                value: insomnia/11.1.0
+            authentication:
+              type: bearer
+              prefix: Bearer
+              token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXN0ZW50YWJpbGlkYWRlIiwic3ViIjoiZWNvYWdyb0BlbWFpbC5jb20iLCJleHAiOjE3Nzk2NjkzMTd9.ZBi5raUBeT4DNpxxQ26-wRwfpq8k5UFOLQ31T3xmoWQ
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+      - name: EmissaoCarbono
+        meta:
+          id: fld_a2dec451a29e4ef2954026b61785c1d9
+          created: 1779400734956
+          modified: 1779400734956
+          sortKey: -1779400734956
+        children:
+          - url: http://localhost:8080/emissoes-carbono
+            name: Cadastra Carbono
+            meta:
+              id: req_4fc218316ab64702ab9486278628921a
+              created: 1779490221435
+              modified: 1779663973662
+              isPrivate: false
+              sortKey: -1779490221435
+            method: POST
+            body:
+              mimeType: application/json
+              text: |-
+                {
+                  "idEmpresa": 42,
+                  "fonteEmissao": "QUEIMA_COMBUSTIVEL",
+                  "dataRegistro": "2026-05-24",
+                  "quantidadeCo2": 950.75
+                }
+            headers:
+              - name: Content-Type
+                value: application/json
+              - name: User-Agent
+                value: insomnia/11.1.0
+            authentication:
+              type: bearer
+              prefix: Bearer
+              token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXN0ZW50YWJpbGlkYWRlIiwic3ViIjoiZ3JlZW50ZWNoQGVtYWlsLmNvbSIsImV4cCI6MTc3OTY2OTczMn0.sSTXp1w8t26n7Sa4goGCxCHpw34dzHQsnh3ugCrbOXo
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: http://localhost:8080/emissoes-carbono
+            name: Listar Emissao de Carbono
+            meta:
+              id: req_433bb0ba39be4beea2df9e74c17eb968
+              created: 1779490517612
+              modified: 1779663971049
+              isPrivate: false
+              sortKey: -1779490517612
+            method: GET
+            headers:
+              - name: User-Agent
+                value: insomnia/11.1.0
+            authentication:
+              type: bearer
+              prefix: Bearer
+              token: e
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+      - name: AgendamentoReducaoCarbonoService
+        meta:
+          id: fld_a628fa66ba1843489ea6d86b037a2134
+          created: 1779400760840
+          modified: 1779491780975
+          sortKey: -1779400760840
+        children:
+          - url: http://localhost:8080/agendamentos-reducao-carbono
+            name: Cadastrar agendamento reducao
+            meta:
+              id: req_6fc8d069b4194e43a024b4738ec54301
+              created: 1779490584097
+              modified: 1779662946053
+              isPrivate: false
+              sortKey: -1779490584097
+            method: POST
+            body:
+              mimeType: application/json
+              text: |-
+                {
+                  "idEmissao": 44,
+                  "descricaoAcao": "Redução do consumo de combustível",
+                  "nomeResponsavel": "Ricardo Lima",
+                  "dataInicio": "2026-07-15",
+                  "dataPrevisao": "2026-12-20",
+                  "quantidadeReducaoEstimada": 400
+                }
+            headers:
+              - name: Content-Type
+                value: application/json
+              - name: User-Agent
+                value: insomnia/11.1.0
+            authentication:
+              type: bearer
+              token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXN0ZW50YWJpbGlkYWRlIiwic3ViIjoiZ3JlZW50ZWNoQGVtYWlsLmNvbSIsImV4cCI6MTc3OTY3MDEwNX0.zEXha8GZPDG0Lk2GFb7HGVtpfvsLvMf6jIeeZeTJOY8
+              prefix: Bearer
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: http://localhost:8080/agendamentos-reducao-carbono/1
+            name: atualizar agendamento reducao
+            meta:
+              id: req_dce9c828d983495a8d15e009439d8c3c
+              created: 1779491385647
+              modified: 1779580153456
+              isPrivate: false
+              sortKey: -1779491385647
+            method: PUT
+            body:
+              mimeType: application/json
+              text: |-
+                {
+                  "nomeResponsavel": "Teste erro"
+                }
+            headers:
+              - name: Content-Type
+                value: application/json
+              - name: User-Agent
+                value: insomnia/11.1.0
+            authentication:
+              type: bearer
+              token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXN0ZW50YWJpbGlkYWRlIiwic3ViIjoiZWNvYWdyb0BlbWFpbC5jb20iLCJleHAiOjE3Nzk1ODY4ODJ9.4rmFhxkYJJVULG6KSxiurlhd68dR4uHYzE1z7T2DwCw
+              prefix: Bearer
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: http://localhost:8080/agendamentos-reducao-carbono
+            name: Listar Agendamento
+            meta:
+              id: req_4e0bbcaf48884e199336c6b18d9e65db
+              created: 1779491782023
+              modified: 1779663055513
+              isPrivate: false
+              sortKey: -1779491782023
+            method: GET
+            headers:
+              - name: User-Agent
+                value: insomnia/11.1.0
+            authentication:
+              type: bearer
+              prefix: Bearer
+              token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXN0ZW50YWJpbGlkYWRlIiwic3ViIjoiZ3JlZW50ZWNoQGVtYWlsLmNvbSIsImV4cCI6MTc3OTY3MDEwNX0.zEXha8GZPDG0Lk2GFb7HGVtpfvsLvMf6jIeeZeTJOY8
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: http://localhost:8080/agendamentos-reducao-carbono/5/cancelar
+            name: Cancelar Agendamento
+            meta:
+              id: req_5be3acdf99564b54b525d4f83c5e0dac
+              created: 1779491844122
+              modified: 1779580362053
+              isPrivate: false
+              sortKey: -1779491844122
+            method: PATCH
+            headers:
+              - name: User-Agent
+                value: insomnia/11.1.0
+            authentication:
+              type: bearer
+              prefix: Bearer
+              token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXN0ZW50YWJpbGlkYWRlIiwic3ViIjoiZWNvYWdyb0BlbWFpbC5jb20iLCJleHAiOjE3Nzk1ODY4ODJ9.4rmFhxkYJJVULG6KSxiurlhd68dR4uHYzE1z7T2DwCw
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: http://localhost:8080/agendamentos-reducao-carbono/24/concluir
+            name: Concluir Agendamento
+            meta:
+              id: req_b4cb911ab90f4b75bed2d3c721223787
+              created: 1779551054211
+              modified: 1779663070927
+              isPrivate: false
+              sortKey: -1779551054211
+            method: PATCH
+            headers:
+              - name: User-Agent
+                value: insomnia/11.1.0
+            authentication:
+              type: bearer
+              prefix: Bearer
+              token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXN0ZW50YWJpbGlkYWRlIiwic3ViIjoiZ3JlZW50ZWNoQGVtYWlsLmNvbSIsImV4cCI6MTc3OTY3MDEwNX0.zEXha8GZPDG0Lk2GFb7HGVtpfvsLvMf6jIeeZeTJOY8
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+      - name: Login - Token
+        meta:
+          id: fld_6cdb17e980814ed3a2d5f619a85dfc83
+          created: 1779579642202
+          modified: 1779579812217
+          sortKey: -1779579642202
+        children:
+          - url: http://localhost:8080/auth/login
+            name: Obter token
+            meta:
+              id: req_8f273cc70abd4a259951b9f5fa915535
+              created: 1779579652778
+              modified: 1779662904114
+              isPrivate: false
+              sortKey: -1779579814608
+            method: POST
+            body:
+              mimeType: application/json
+              text: |-
+                {
+                  "email": "greentech@email.com",
+                  "senha": "123456"
+                }
+            headers:
+              - name: Content-Type
+                value: application/json
+              - name: User-Agent
+                value: insomnia/11.1.0
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+cookieJar:
+  name: Default Jar
+  meta:
+    id: jar_99d30891da4bdcebc63947a8fc17f076de878684
+    created: 1753828692832
+    modified: 1753828692832
+environments:
+  name: Base Environment
+  meta:
+    id: env_99d30891da4bdcebc63947a8fc17f076de878684
+    created: 1753828692761
+    modified: 1753828692761
+    isPrivate: false

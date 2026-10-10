@@ -1,0 +1,271 @@
+name: CI/CD - Sustentabilidade API
+
+# Pipeline de integracao e entrega continua:
+#   1) build-and-test     -> compila o projeto e roda os testes automatizados
+#   2) docker-build-push  -> builda a imagem Docker (multi-stage) e publica no GHCR
+#   3) deploy-staging     -> sobe a aplicacao + banco via docker compose (ambiente de staging) e faz smoke test
+#   4) deploy-production  -> mesmo processo do staging, porem no ambiente de producao (somente a partir da branch main)
+on:
+  push:
+    branches: ["main", "develop"]
+  pull_request:
+    branches: ["main", "develop"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  JAVA_VERSION: "21"
+  ORACLE_IMAGE: gvenzl/oracle-free:23-slim-faststart
+
+jobs:
+  # ------------------------------------------------------------------
+  # 1) BUILD + TESTES AUTOMATIZADOS
+  # ------------------------------------------------------------------
+  build-and-test:
+    name: Build & Testes
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    services:
+      oracle:
+        image: gvenzl/oracle-free:23-slim-faststart
+        env:
+          ORACLE_PASSWORD: ${{ secrets.ORACLE_PASSWORD || 'OraclePass_123' }}
+          APP_USER: ${{ secrets.DB_USER || 'sustentabilidade_app' }}
+          APP_USER_PASSWORD: ${{ secrets.DB_PASSWORD || 'AppPass_123' }}
+        ports:
+          - 1521:1521
+        options: >-
+          --health-cmd healthcheck.sh
+          --health-interval 10s
+          --health-timeout 10s
+          --health-retries 20
+          --health-start-period 60s
+
+    steps:
+      - name: Checkout do codigo
+        uses: actions/checkout@v4
+
+      - name: Configurar JDK 21 (Temurin)
+        uses: actions/setup-java@v4
+        with:
+          java-version: ${{ env.JAVA_VERSION }}
+          distribution: temurin
+          cache: maven
+
+      - name: Build (compilacao do projeto)
+        run: mvn -B clean compile
+
+      - name: Testes automatizados
+        env:
+          SPRING_DATASOURCE_URL: jdbc:oracle:thin:@localhost:1521/FREEPDB1
+          SPRING_DATASOURCE_USERNAME: ${{ secrets.DB_USER || 'sustentabilidade_app' }}
+          SPRING_DATASOURCE_PASSWORD: ${{ secrets.DB_PASSWORD || 'AppPass_123' }}
+          JWT_SECRET: ${{ secrets.JWT_SECRET || 'sustentabilidade-ci-secret' }}
+        run: mvn -B test
+
+      - name: Publicar relatorio de testes
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: relatorio-testes-surefire
+          path: target/surefire-reports/
+
+      - name: Empacotar aplicacao (gerar .jar)
+        run: mvn -B package -DskipTests
+
+      - name: Publicar artefato .jar
+        uses: actions/upload-artifact@v4
+        with:
+          name: sustentabilidade-jar
+          path: target/*.jar
+
+  # ------------------------------------------------------------------
+  # 2) BUILD E PUBLICACAO DA IMAGEM DOCKER (build once, deploy many)
+  # ------------------------------------------------------------------
+  docker-build-push:
+    name: Build & Push da imagem Docker
+    needs: build-and-test
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: read
+      packages: write
+    outputs:
+      image_repo: ${{ steps.meta.outputs.image_repo }}
+      image_tag: ${{ steps.meta.outputs.image_tag }}
+    steps:
+      - name: Checkout do codigo
+        uses: actions/checkout@v4
+
+      - name: Definir nome/tag da imagem
+        id: meta
+        run: |
+          echo "image_repo=ghcr.io/$(echo '${{ github.repository }}' | tr '[:upper:]' '[:lower:]')" >> "$GITHUB_OUTPUT"
+          echo "image_tag=sha-${{ github.sha }}" >> "$GITHUB_OUTPUT"
+
+      - name: Configurar Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Login no GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build e push da imagem Docker
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          tags: |
+            ${{ steps.meta.outputs.image_repo }}:${{ steps.meta.outputs.image_tag }}
+            ${{ steps.meta.outputs.image_repo }}:latest
+
+  # ------------------------------------------------------------------
+  # 3) DEPLOY - STAGING
+  # ------------------------------------------------------------------
+  deploy-staging:
+    name: Deploy - Staging
+    needs: docker-build-push
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    environment:
+      name: staging
+      url: http://localhost:8081/actuator/health
+    permissions:
+      contents: read
+      packages: read
+    steps:
+      - name: Checkout do codigo
+        uses: actions/checkout@v4
+
+      - name: Login no GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Gerar .env de staging
+        run: |
+          cat <<EOF > .env
+          ORACLE_PASSWORD=${{ secrets.ORACLE_PASSWORD || 'OraclePass_123' }}
+          DB_USER=${{ secrets.DB_USER || 'sustentabilidade_app' }}
+          DB_PASSWORD=${{ secrets.DB_PASSWORD || 'AppPass_123' }}
+          SPRING_PROFILES_ACTIVE=staging
+          SERVER_PORT=8080
+          APP_PORT=8081
+          JWT_SECRET=${{ secrets.JWT_SECRET || 'sustentabilidade-staging-secret' }}
+          APP_IMAGE=${{ needs.docker-build-push.outputs.image_repo }}:${{ needs.docker-build-push.outputs.image_tag }}
+          EOF
+
+      - name: Pull da imagem publicada
+        run: docker compose --env-file .env pull app
+
+      - name: Subir ambiente de staging (docker compose)
+        run: docker compose --env-file .env up -d
+
+      - name: Aguardar aplicacao ficar saudavel
+        run: |
+          for i in $(seq 1 30); do
+            if curl -fs http://localhost:8081/actuator/health | grep -q '"status":"UP"'; then
+              echo "Aplicacao de staging esta UP"
+              exit 0
+            fi
+            echo "Aguardando aplicacao subir... (tentativa $i)"
+            sleep 10
+          done
+          echo "Timeout aguardando a aplicacao de staging"
+          docker compose logs
+          exit 1
+
+      - name: Smoke test - Staging
+        run: |
+          curl -f http://localhost:8081/actuator/health
+          echo "Smoke test de staging concluido com sucesso"
+
+      - name: Evidencias - logs do ambiente
+        if: always()
+        run: docker compose logs --no-color
+
+      - name: Derrubar ambiente de staging
+        if: always()
+        run: docker compose down -v
+
+  # ------------------------------------------------------------------
+  # 4) DEPLOY - PRODUCAO (somente a partir da branch main)
+  # ------------------------------------------------------------------
+  deploy-production:
+    name: Deploy - Producao
+    needs: [docker-build-push, deploy-staging]
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    environment:
+      name: production
+      url: http://localhost:8080/actuator/health
+    permissions:
+      contents: read
+      packages: read
+    steps:
+      - name: Checkout do codigo
+        uses: actions/checkout@v4
+
+      - name: Login no GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Gerar .env de producao
+        run: |
+          cat <<EOF > .env
+          ORACLE_PASSWORD=${{ secrets.ORACLE_PASSWORD || 'OraclePass_123' }}
+          DB_USER=${{ secrets.DB_USER || 'sustentabilidade_app' }}
+          DB_PASSWORD=${{ secrets.DB_PASSWORD || 'AppPass_123' }}
+          SPRING_PROFILES_ACTIVE=production
+          SERVER_PORT=8080
+          APP_PORT=8080
+          JWT_SECRET=${{ secrets.JWT_SECRET || 'sustentabilidade-production-secret' }}
+          APP_IMAGE=${{ needs.docker-build-push.outputs.image_repo }}:${{ needs.docker-build-push.outputs.image_tag }}
+          EOF
+
+      - name: Pull da imagem publicada
+        run: docker compose --env-file .env pull app
+
+      - name: Subir ambiente de producao (docker compose)
+        run: docker compose --env-file .env up -d
+
+      - name: Aguardar aplicacao ficar saudavel
+        run: |
+          for i in $(seq 1 30); do
+            if curl -fs http://localhost:8080/actuator/health | grep -q '"status":"UP"'; then
+              echo "Aplicacao de producao esta UP"
+              exit 0
+            fi
+            echo "Aguardando aplicacao subir... (tentativa $i)"
+            sleep 10
+          done
+          echo "Timeout aguardando a aplicacao de producao"
+          docker compose logs
+          exit 1
+
+      - name: Smoke test - Producao
+        run: |
+          curl -f http://localhost:8080/actuator/health
+          echo "Smoke test de producao concluido com sucesso"
+
+      - name: Evidencias - logs do ambiente
+        if: always()
+        run: docker compose logs --no-color
+
+      - name: Derrubar ambiente de producao
+        if: always()
+        run: docker compose down -v
