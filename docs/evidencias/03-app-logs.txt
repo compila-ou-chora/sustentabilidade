@@ -1,0 +1,75 @@
+sustentabilidade-app  | 
+sustentabilidade-app  |   .   ____          _            __ _ _
+sustentabilidade-app  |  /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+sustentabilidade-app  | ( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+sustentabilidade-app  |  \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+sustentabilidade-app  |   '  |____| .__|_| |_|_| |_\__, | / / / /
+sustentabilidade-app  |  =========|_|==============|___/=/_/_/_/
+sustentabilidade-app  | 
+sustentabilidade-app  |  :: Spring Boot ::               (v3.5.14)
+sustentabilidade-app  | 
+sustentabilidade-app  | 2026-10-09T11:14:00.337Z  INFO 1 --- [sustentabilidade] [           main] b.c.f.s.SustentabilidadeApplication      : Starting SustentabilidadeApplication v0.0.1-SNAPSHOT using Java 21.0.12.1 with PID 1 (/app/app.jar started by spring in /app)
+sustentabilidade-app  | 2026-10-09T11:14:00.343Z  INFO 1 --- [sustentabilidade] [           main] b.c.f.s.SustentabilidadeApplication      : The following 1 profile is active: "staging"
+sustentabilidade-app  | 2026-10-09T11:14:02.639Z  INFO 1 --- [sustentabilidade] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+sustentabilidade-app  | 2026-10-09T11:14:02.819Z  INFO 1 --- [sustentabilidade] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 147 ms. Found 3 JPA repository interfaces.
+sustentabilidade-app  | 2026-10-09T11:14:04.030Z  INFO 1 --- [sustentabilidade] [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+sustentabilidade-app  | 2026-10-09T11:14:04.054Z  INFO 1 --- [sustentabilidade] [           main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+sustentabilidade-app  | 2026-10-09T11:14:04.055Z  INFO 1 --- [sustentabilidade] [           main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.54]
+sustentabilidade-app  | 2026-10-09T11:14:04.124Z  INFO 1 --- [sustentabilidade] [           main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+sustentabilidade-app  | 2026-10-09T11:14:04.128Z  INFO 1 --- [sustentabilidade] [           main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 3686 ms
+sustentabilidade-app  | 2026-10-09T11:14:05.326Z  INFO 1 --- [sustentabilidade] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+sustentabilidade-app  | 2026-10-09T11:14:06.397Z  INFO 1 --- [sustentabilidade] [           main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection oracle.jdbc.driver.T4CConnection@5fd18419
+sustentabilidade-app  | 2026-10-09T11:14:06.413Z  INFO 1 --- [sustentabilidade] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+sustentabilidade-app  | 2026-10-09T11:14:06.447Z  INFO 1 --- [sustentabilidade] [           main] org.flywaydb.core.FlywayExecutor         : Database: jdbc:oracle:thin:@db:1521/FREEPDB1 (Oracle 23.26)
+sustentabilidade-app  | 2026-10-09T11:14:07.293Z  WARN 1 --- [sustentabilidade] [           main] o.f.c.internal.database.base.Database    : Flyway upgrade recommended: Oracle 23.26 is newer than this version of Flyway and support has not been tested. The latest supported version of Oracle is 21.3.
+sustentabilidade-app  | 2026-10-09T11:14:07.526Z  INFO 1 --- [sustentabilidade] [           main] o.f.c.i.s.JdbcTableSchemaHistory         : Schema history table "SUSTENTABILIDADE_APP"."flyway_schema_history" does not exist yet
+sustentabilidade-app  | 2026-10-09T11:14:07.530Z  INFO 1 --- [sustentabilidade] [           main] o.f.core.internal.command.DbValidate     : Successfully validated 4 migrations (execution time 00:00.196s)
+sustentabilidade-app  | 2026-10-09T11:14:08.392Z  INFO 1 --- [sustentabilidade] [           main] org.flywaydb.core.Flyway                 : All configured schemas are empty; baseline operation skipped. A baseline or migration script with a lower version than the baseline version may execute if available. Check the Schemas parameter if this is not intended.
+sustentabilidade-app  | 2026-10-09T11:14:08.400Z  INFO 1 --- [sustentabilidade] [           main] o.f.c.i.s.JdbcTableSchemaHistory         : Creating Schema History table "SUSTENTABILIDADE_APP"."flyway_schema_history" ...
+sustentabilidade-app  | 2026-10-09T11:14:08.907Z  INFO 1 --- [sustentabilidade] [           main] o.f.core.internal.command.DbMigrate      : Current version of schema "SUSTENTABILIDADE_APP": << Empty Schema >>
+sustentabilidade-app  | 2026-10-09T11:14:08.938Z  INFO 1 --- [sustentabilidade] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "SUSTENTABILIDADE_APP" to version "002 - create table empresa"
+sustentabilidade-app  | 2026-10-09T11:14:12.249Z  INFO 1 --- [sustentabilidade] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "SUSTENTABILIDADE_APP" to version "003 - create table emissao carbono"
+sustentabilidade-app  | 2026-10-09T11:14:12.333Z  INFO 1 --- [sustentabilidade] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "SUSTENTABILIDADE_APP" to version "004 - create table agendamento reducao carbono"
+sustentabilidade-app  | 2026-10-09T11:14:12.459Z  INFO 1 --- [sustentabilidade] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "SUSTENTABILIDADE_APP" to version "5 - alter table empresa add login"
+sustentabilidade-app  | 2026-10-09T11:14:12.679Z  INFO 1 --- [sustentabilidade] [           main] o.f.core.internal.command.DbMigrate      : Successfully applied 4 migrations to schema "SUSTENTABILIDADE_APP", now at version v5 (execution time 00:00.399s)
+sustentabilidade-app  | 2026-10-09T11:14:12.960Z  INFO 1 --- [sustentabilidade] [           main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+sustentabilidade-app  | 2026-10-09T11:14:13.094Z  INFO 1 --- [sustentabilidade] [           main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.6.49.Final
+sustentabilidade-app  | 2026-10-09T11:14:13.190Z  INFO 1 --- [sustentabilidade] [           main] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+sustentabilidade-app  | 2026-10-09T11:14:13.947Z  INFO 1 --- [sustentabilidade] [           main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+sustentabilidade-app  | 2026-10-09T11:14:14.171Z  INFO 1 --- [sustentabilidade] [           main] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+sustentabilidade-app  | 	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+sustentabilidade-app  | 	Database driver: undefined/unknown
+sustentabilidade-app  | 	Database version: 23.26
+sustentabilidade-app  | 	Autocommit mode: undefined/unknown
+sustentabilidade-app  | 	Isolation level: undefined/unknown
+sustentabilidade-app  | 	Minimum pool size: undefined/unknown
+sustentabilidade-app  | 	Maximum pool size: undefined/unknown
+sustentabilidade-app  | 2026-10-09T11:14:16.606Z  INFO 1 --- [sustentabilidade] [           main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+sustentabilidade-app  | 2026-10-09T11:14:16.614Z  INFO 1 --- [sustentabilidade] [           main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+sustentabilidade-app  | 2026-10-09T11:14:17.426Z  INFO 1 --- [sustentabilidade] [           main] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with UserDetailsService bean with name authorizationService
+sustentabilidade-app  | 2026-10-09T11:14:17.469Z  WARN 1 --- [sustentabilidade] [           main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+sustentabilidade-app  | 2026-10-09T11:14:18.230Z  INFO 1 --- [sustentabilidade] [           main] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 2 endpoints beneath base path '/actuator'
+sustentabilidade-app  | 2026-10-09T11:14:19.059Z  INFO 1 --- [sustentabilidade] [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path '/'
+sustentabilidade-app  | 2026-10-09T11:14:19.073Z  INFO 1 --- [sustentabilidade] [           main] b.c.f.s.SustentabilidadeApplication      : Started SustentabilidadeApplication in 19.843 seconds (process running for 21.11)
+sustentabilidade-app  | 2026-10-09T11:14:23.401Z  INFO 1 --- [sustentabilidade] [nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+sustentabilidade-app  | 2026-10-09T11:14:23.401Z  INFO 1 --- [sustentabilidade] [nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+sustentabilidade-app  | 2026-10-09T11:14:23.404Z  INFO 1 --- [sustentabilidade] [nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
+sustentabilidade-app  | Hibernate: 
+sustentabilidade-app  |     insert 
+sustentabilidade-app  |     into
+sustentabilidade-app  |         tb_empresa
+sustentabilidade-app  |         (ds_email, nm_cidade, nm_empresa, ds_senha, sg_estado, id_empresa) 
+sustentabilidade-app  |     values
+sustentabilidade-app  |         (?, ?, ?, ?, ?, default)
+sustentabilidade-app  | Hibernate: 
+sustentabilidade-app  |     select
+sustentabilidade-app  |         e1_0.id_empresa,
+sustentabilidade-app  |         e1_0.ds_email,
+sustentabilidade-app  |         e1_0.nm_cidade,
+sustentabilidade-app  |         e1_0.nm_empresa,
+sustentabilidade-app  |         e1_0.ds_senha,
+sustentabilidade-app  |         e1_0.sg_estado 
+sustentabilidade-app  |     from
+sustentabilidade-app  |         tb_empresa e1_0 
+sustentabilidade-app  |     where
+sustentabilidade-app  |         e1_0.ds_email=?

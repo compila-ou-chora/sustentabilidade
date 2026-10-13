@@ -1,0 +1,3 @@
+NAME                   IMAGE                                  COMMAND                  SERVICE   CREATED              STATUS                        PORTS
+sustentabilidade-app   sustentabilidade-api:local             "java -jar /app/app.…"   app       About a minute ago   Up About a minute (healthy)   0.0.0.0:8090->8080/tcp, [::]:8090->8080/tcp
+sustentabilidade-db    gvenzl/oracle-free:23-slim-faststart   "container-entrypoin…"   db        2 minutes ago        Up 2 minutes (healthy)        0.0.0.0:1521->1521/tcp, [::]:1521->1521/tcp

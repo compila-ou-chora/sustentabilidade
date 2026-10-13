@@ -1,5 +1,7 @@
 HELP.md
-/docs/
+/docs/__pycache__
+/docs/gerar_documentacao.py
+/docs/documentacao-tecnica.pdf
 target/
 .mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/

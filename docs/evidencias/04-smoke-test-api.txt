@@ -1,0 +1,8 @@
+$ curl http://localhost:8080/actuator/health
+{"status":"UP"}
+
+$ curl -X POST http://localhost:8080/auth/register ...
+{"id":1,"nomeEmpresa":"Eco Teste","nomeCidade":"Sao Paulo","siglaEstado":"SP","email":"eco@teste.com"}
+
+$ curl -X POST http://localhost:8080/auth/login ...
+{"token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...(omitido)"}
